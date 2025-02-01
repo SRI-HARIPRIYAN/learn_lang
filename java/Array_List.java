@@ -21,6 +21,15 @@ public class Array_List {
         while (it.hasNext()) {
             System.out.println(it.next());
         }
-
+        while (it.hasNext()) {
+            if (it.next() == 3) {
+                it.remove();
+            }
+        }
+        // it.remove() deleted the iterator so below line wont work
+        while (it.hasNext()) {
+            System.out.println(it.next());
+            System.out.println("hl");
+        }
     }
 }
