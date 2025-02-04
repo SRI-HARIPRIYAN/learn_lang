@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-
+import { display } from "@/app/_lib/display";
 const Group = async ({
 	params,
 }: {
@@ -11,6 +11,7 @@ const Group = async ({
 		<div>
 			<h1>Event {eventId}</h1>
 			<h1>group {groupId}</h1>
+			{display()}
 		</div>
 	);
 };
