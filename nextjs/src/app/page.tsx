@@ -1,7 +1,12 @@
-import React from "react";
+import Link from "next/link";
 
 const Home = () => {
-	return <div>Home</div>;
+	return (
+		<div>
+			<p>HOME</p>
+			<Link href="/products">Products</Link>
+		</div>
+	);
 };
 
 export default Home;
