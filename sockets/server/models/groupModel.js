@@ -5,7 +5,14 @@ const groupSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+
 	members: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+		},
+	],
+	moderators: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
