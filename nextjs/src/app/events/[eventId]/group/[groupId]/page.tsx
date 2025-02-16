@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { display } from "@/app/_lib/display";
 const Group = async ({
 	params,
@@ -6,7 +5,11 @@ const Group = async ({
 	params: Promise<{ eventId: string; groupId: number | number }>;
 }) => {
 	const { eventId, groupId } = await params;
-	if (groupId > 1000) notFound();
+	if (groupId > 1000) {
+		// notFound();
+		// redirect(`/events/${eventId}`);
+		throw new Error("Group id greater than 1000");
+	}
 	return (
 		<div>
 			<h1>Event {eventId}</h1>
