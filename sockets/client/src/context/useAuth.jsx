@@ -3,10 +3,15 @@ import { createContext, useContext, useState, useEffect } from "react";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-	const [user, setUser] = useState(null);
+	const [user, setUser] = useState(() => {
+		const storedUser = localStorage.getItem("token");
+		return storedUser ? JSON.parse(storedUser) : null;
+	});
+
 	useEffect(() => {
-		let user = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
-		setUser(user);
+		if (user) {
+			localStorage.setItem("token", JSON.stringify(user));
+		}
 	}, [user]);
 	return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };

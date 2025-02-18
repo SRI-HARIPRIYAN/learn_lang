@@ -3,9 +3,10 @@ import Group from "../models/groupModel.js";
 
 export const createGroup = async (req, res) => {
 	try {
-		const { groupName, userId } = req.body;
+		console.log(req.body);
+		const { name, userId } = req.body;
 		const group = await Group.create({
-			name: groupName,
+			name: name,
 			members: [userId],
 			admin: userId,
 		});
@@ -18,8 +19,14 @@ export const createGroup = async (req, res) => {
 };
 export const getGroups = async (req, res) => {
 	try {
-		const { userId } = req.body;
-		const groups = await Group.find({ admin: userId });
+		const groups = await Group.find({
+			$or: [
+				{ admin: req.params.userId }, // User is an admin
+				{ moderators: { $in: [req.params.userId] } }, // User is in the moderators array
+			],
+		})
+			.populate("moderators", "_id userName")
+			.populate("admin", "_id userName");
 		res.status(200).json(groups);
 	} catch (error) {
 		console.log("Error in  get groups controller " + error);

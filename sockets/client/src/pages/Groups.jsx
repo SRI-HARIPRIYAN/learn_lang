@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { createGroup, getGroups } from "../api/api";
+import { addModerator, createGroup, getGroups } from "../api/api";
 import { useAuth } from "../context/useAuth";
 import { Link } from "react-router-dom";
 
@@ -11,19 +11,27 @@ const Groups = () => {
 
 	const { mutate, data: createdGroup } = useMutation({
 		mutationFn: createGroup,
+		onSuccess: () => {
+			refetch();
+		},
 	});
-	console.log(createdGroup);
-
-	const { data, isLoading } = useQuery({
+	const { mutate: addModeratorMutation } = useMutation({
+		mutationFn: addModerator,
+	});
+	console.log("createdGroup: ", createdGroup);
+	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["getGroups"],
-		queryFn: getGroups,
+		queryFn: () => getGroups(user._id),
 	});
 	console.log(data?.data);
 	const handleCreateGroup = (e) => {
 		e.preventDefault();
 		mutate({ name, userId: user?._id });
 	};
-	const handleAddModerator = () => {};
+	const handleAddModerator = (e, groupId) => {
+		e.preventDefault();
+		addModeratorMutation({ groupId, email });
+	};
 	return (
 		<div className=" text-2xl flex flex-col">
 			<Link to="/auth">Authentication</Link>
@@ -42,20 +50,29 @@ const Groups = () => {
 					Create group
 				</button>
 			</form>
-			<div>{}</div>
-			<form>
-				<label htmlFor="">Add Moderator</label>
-				<input
-					className="border text-xl p-1"
-					type="text"
-					name="email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<button className="text-xl" onClick={handleAddModerator}>
-					Add this moderator
-				</button>
-			</form>
+			<div className="flex flex-col gap-3">
+				{data?.data.map((group, i) => (
+					<div key={i} className="flex justify-around items-center">
+						<div>{group.name}</div>
+
+						<input
+							className="border text-xl h-10 p-1"
+							type="text"
+							name="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							placeholder="add mod"
+						/>
+						<button
+							className="text-xl h-10"
+							onClick={(e) => handleAddModerator(e, group._id)}
+						>
+							+
+						</button>
+					</div>
+				))}
+			</div>
+			<form></form>
 		</div>
 	);
 };

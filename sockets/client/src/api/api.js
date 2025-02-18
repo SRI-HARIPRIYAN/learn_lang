@@ -7,10 +7,15 @@ export const login = (userData) => axios.post(`${backendUrl}/auth/login`, userDa
 export const createGroup = (groupData) => axios.post(`${backendUrl}/groups/createGroup`, groupData);
 
 export const addModerator = (moderatorData) =>
-	axios.post(`${backendUrl}/groups/add`, moderatorData);
+	axios.post(`${backendUrl}/groups/addModerator`, moderatorData);
 
-export const getGroups = () => axios.get(`${backendUrl}/groups`, { userData });
+export const getGroups = (userId) => axios.get(`${backendUrl}/groups/${userId}`);
 
-export const getMessages = () => axios.get(`${backendUrl}/chat`, { userData });
+export const getMessages = (groupId) => axios.get(`${backendUrl}/chats/${groupId}`);
 
-export const postMessage = () => axios.post(`${backendUrl}/chat/message`, { chatData });
+export const postMessage = (chatData) => {
+	console.log(chatData);
+	return axios.post(`${backendUrl}/chats`, chatData);
+};
+
+export const getUsers = () => axios.get(`${backendUrl}/users`);
