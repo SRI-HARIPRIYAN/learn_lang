@@ -1,8 +1,18 @@
 "use client";
-export default function ErrorComponent() {
+import { useRouter } from "next/navigation";
+import { startTransition } from "react";
+export default function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+	const router = useRouter();
+	const reload = () => {
+		startTransition(() => {
+			router.refresh();
+			reset();
+		});
+	};
 	return (
 		<>
-			<div>Error in the page</div>
+			<div>{error.message}</div>
+			<button onClick={reload}>Try again</button>
 		</>
 	);
 }
