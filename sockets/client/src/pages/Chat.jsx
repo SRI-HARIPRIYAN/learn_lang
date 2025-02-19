@@ -8,8 +8,9 @@ const Chat = () => {
 	const { user } = useAuth();
 	const { socket } = useSocket();
 	const [message, setMessage] = useState("");
+	const [messagges, setMessages] = useState([]);
 	const [selectedGroup, setSelectedGroup] = useState(null);
-
+	// const [newJoiner,setNewJoiner] = useState('')
 	//get groups
 	const { data: groupsData, isLoading } = useQuery({
 		queryKey: ["getGroups"],
@@ -40,8 +41,24 @@ const Chat = () => {
 		}
 	};
 	useEffect(() => {
-		if (selectedGroup) socket.emit("join_room", { groupId: selectedGroup._id, userId: user._id });
-	}, [selectedGroup]);
+		setMessages(messageData?.data);
+	}, [messageData]);
+	useEffect(() => {
+		if (!selectedGroup) return;
+		socket.emit("join_room", { groupId: selectedGroup._id, userId: user._id });
+		socket.on("newJoiner", (joinerData) => {
+			console.log(joinerData);
+		});
+		console.log("join_room emitted");
+		socket.on("newMessage", (newMessage) => {
+			setMessages((prev) => [...prev, newMessage]);
+		});
+
+		return () => {
+			socket.off("newMessage");
+			socket.off("newJoiner");
+		};
+	}, [selectedGroup, socket]);
 	return (
 		<div className="flex">
 			<div className="flex flex-col">
@@ -61,7 +78,7 @@ const Chat = () => {
 								onClick={() => setSelectedGroup(el)}
 								key={i}
 							>
-								{el?._id}
+								{el.name}
 							</div>
 						))}
 					</div>
@@ -71,7 +88,7 @@ const Chat = () => {
 				<h1>Chat :{selectedGroup?.name}</h1>
 				<div className="border flex flex-col gap-2">
 					messages
-					{messageData?.data?.map((mess, i) => (
+					{messagges?.map((mess, i) => (
 						<p key={i}>{mess.message}</p>
 					))}
 				</div>

@@ -36,8 +36,10 @@ export const getGroups = async (req, res) => {
 
 export const addModerator = async (req, res) => {
 	try {
+		console.log(req.body);
 		const { email, groupId } = req.body;
 		const user = await User.findOne({ email: email });
+		console.log("user", JSON.stringify(user));
 		const group = await Group.findById(groupId);
 		group.moderators.push(user._id);
 		await group.save();

@@ -11,21 +11,18 @@ const io = new Server(server, {
 	},
 });
 
-const groups = {};
 io.on("connection", (socket) => {
 	console.log("user connected", socket.id);
 	socket.emit("welcome", "Welcome to the server");
-	socket.on("join_room", ({ userId, groupId }) => {
+	socket.on("join_room", ({ groupId, userId }) => {
 		socket.join(groupId);
-		socket.to(groupId).emit("message", `user ${userId} joined the room ${groupId} `);
-		console.log(JSON.stringify(groups));
+		io.to(groupId).emit("newJoiner", `user ${userId} joined the room ${groupId} `);
 	});
 	/* socket.on("join_room", ({ groupId, userId }) => {
 		if (groups[groupId]) groups[groupId] = [...groups[groupId], userId];
 		else groups[groupId] = [userId];
 		console.log("groups after selected a chat: ", JSON.stringify(groups));
 	}); */
-	console.log("groups before selecting a chat: " + JSON.stringify(groups));
 });
 
 export { app, server, io };
