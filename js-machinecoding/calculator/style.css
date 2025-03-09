@@ -1,0 +1,21 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.numberBox {
+	display: flex;
+	gap: 10px;
+}
+.numberBox div {
+	width: 50px;
+	height: 50px;
+	background: rgb(87, 87, 175);
+	color: white;
+	padding: 3px;
+	cursor: pointer;
+}
+.numberBox div:hover {
+	background-color: rgb(115, 115, 180);
+}

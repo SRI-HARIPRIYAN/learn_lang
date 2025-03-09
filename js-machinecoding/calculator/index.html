@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div>
+			<h1>Calculator</h1>
+			<div>
+				<input type="text" name="output" id="output" />
+			</div>
+			<div class="numberBox">
+				<div onclick="addToExpression('1')">1</div>
+				<div onclick="addToExpression('2')">2</div>
+				<div onclick="addToExpression('3')">3</div>
+				<div onclick="addToExpression('4')">4</div>
+				<div onclick="addToExpression('5')">5</div>
+				<div onclick="addToExpression('6')">6</div>
+				<div onclick="addToExpression('7')">7</div>
+				<div onclick="addToExpression('8')">8</div>
+				<div onclick="addToExpression('9')">9</div>
+				<div onclick="addToExpression('0')">0</div>
+			</div>
+			<div>
+				<h2>Symbols</h2>
+				<button id="add" class="operations" onclick="addToExpression('+')">+</button>
+				<button id="sub" class="operations" onclick="addToExpression('-')">-</button>
+				<button id="mul" class="operations" onclick="addToExpression('*')">x</button>
+				<button id="div" class="operations" onclick="addToExpression('/')">/</button>
+			</div>
+			<div>
+				<button class="actions" onclick="clr()">CE</button>
+				<button class="actions" onclick="solve()">=</button>
+			</div>
+		</div>
+		<script src="script.js"></script>
+	</body>
+</html>
